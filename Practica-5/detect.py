@@ -128,21 +128,22 @@ def detect(save_img=False):
                 # Write results
                 for *xyxy, conf, cls in reversed(det):
 
-                    #crop an image based on coordinates
-                    object_coordinates = [int(xyxy[0]),int(xyxy[1]),int(xyxy[2]),int(xyxy[3])]
-                    cropobj = im0[int(xyxy[1]):int(xyxy[3]),int(xyxy[0]):int(xyxy[2])]
-                    
-                    #save crop part
-                    crop_file_path = os.path.join("licenses-plates-detected",str(p.name))
-                    if not os.path.exists(crop_file_path):
-                        cv2.imwrite(crop_file_path, cropobj)
-                    else:
-                        filename = str(file_cnt) + "_" + str(p.name)
-                        crop_file_path = os.path.join("licenses-plates-detected", filename)
+                    if dataset.mode == 'image':
+                        #crop an image based on coordinates
+                        object_coordinates = [int(xyxy[0]),int(xyxy[1]),int(xyxy[2]),int(xyxy[3])]
+                        cropobj = im0[int(xyxy[1]):int(xyxy[3]),int(xyxy[0]):int(xyxy[2])]
+                        
+                        #save crop part
+                        crop_file_path = os.path.join("licenses-plates-detected",str(p.name))
                         if not os.path.exists(crop_file_path):
                             cv2.imwrite(crop_file_path, cropobj)
-                        file_cnt += 1
-                    crp_cnt = crp_cnt+1
+                        else:
+                            filename = str(file_cnt) + "_" + str(p.name)
+                            crop_file_path = os.path.join("licenses-plates-detected", filename)
+                            if not os.path.exists(crop_file_path):
+                                cv2.imwrite(crop_file_path, cropobj)
+                            file_cnt += 1
+                        crp_cnt = crp_cnt+1
 
                     if save_txt:  # Write to file
                         xywh = (xyxy2xywh(torch.tensor(xyxy).view(1, 4)) / gn).view(-1).tolist()  # normalized xywh
