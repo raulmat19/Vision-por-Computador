@@ -24,8 +24,8 @@ def detect(save_img=False):
 
     # Info obtenida de https://github.com/RizwanMunawar/yolov7-object-cropping/blob/main/detect_and_crop.py
     # Creación de directorio para matrículas detectadas
-    if not os.path.exists("licenses-plates-detected"):
-        os.mkdir("licenses-plates-detected")
+    if not os.path.exists("license-plates-detected"):
+        os.mkdir("license-plates-detected")
     crp_cnt = 0
 
     # Directories
@@ -134,12 +134,12 @@ def detect(save_img=False):
                         cropobj = im0[int(xyxy[1]):int(xyxy[3]),int(xyxy[0]):int(xyxy[2])]
                         
                         #save crop part
-                        crop_file_path = os.path.join("licenses-plates-detected",str(p.name))
+                        crop_file_path = os.path.join("license-plates-detected",str(p.name))
                         if not os.path.exists(crop_file_path):
                             cv2.imwrite(crop_file_path, cropobj)
                         else:
                             filename = str(file_cnt) + "_" + str(p.name)
-                            crop_file_path = os.path.join("licenses-plates-detected", filename)
+                            crop_file_path = os.path.join("license-plates-detected", filename)
                             if not os.path.exists(crop_file_path):
                                 cv2.imwrite(crop_file_path, cropobj)
                             file_cnt += 1
@@ -153,7 +153,7 @@ def detect(save_img=False):
 
                     if save_img or view_img:  # Add bbox to image
                         label = f'{names[int(cls)]} {conf:.2f}'
-                        plot_one_box(xyxy, im0, label=label, color=colors[int(cls)], line_thickness=1)
+                        plot_one_box(xyxy, im0, label=label, color=colors[int(cls)], line_thickness=3)
 
             # Print time (inference + NMS)
             print(f'{s}Done. ({(1E3 * (t2 - t1)):.1f}ms) Inference, ({(1E3 * (t3 - t2)):.1f}ms) NMS')
