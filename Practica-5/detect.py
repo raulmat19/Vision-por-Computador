@@ -75,6 +75,7 @@ def detect(save_img=False):
 
     t0 = time.time()
     for path, img, im0s, vid_cap in dataset:
+        
         img = torch.from_numpy(img).to(device)
         img = img.half() if half else img.float()  # uint8 to fp16/32
         img /= 255.0  # 0 - 255 to 0.0 - 1.0
@@ -103,6 +104,7 @@ def detect(save_img=False):
         if classify:
             pred = apply_classifier(pred, modelc, img, im0s)
 
+        file_cnt = 1
         # Process detections
         for i, det in enumerate(pred):  # detections per image
             if webcam:  # batch_size >= 1
@@ -131,8 +133,15 @@ def detect(save_img=False):
                     cropobj = im0[int(xyxy[1]):int(xyxy[3]),int(xyxy[0]):int(xyxy[2])]
                     
                     #save crop part
-                    crop_file_path = os.path.join("licenses-plates-detected",str(crp_cnt)+".jpg")
-                    cv2.imwrite(crop_file_path, cropobj)
+                    crop_file_path = os.path.join("licenses-plates-detected",str(p.name))
+                    if not os.path.exists(crop_file_path):
+                        cv2.imwrite(crop_file_path, cropobj)
+                    else:
+                        filename = str(file_cnt) + "_" + str(p.name)
+                        crop_file_path = os.path.join("licenses-plates-detected", filename)
+                        if not os.path.exists(crop_file_path):
+                            cv2.imwrite(crop_file_path, cropobj)
+                        file_cnt += 1
                     crp_cnt = crp_cnt+1
 
                     if save_txt:  # Write to file
