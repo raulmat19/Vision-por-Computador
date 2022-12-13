@@ -24,8 +24,8 @@ def detect(save_img=False):
 
     # Info obtenida de https://github.com/RizwanMunawar/yolov7-object-cropping/blob/main/detect_and_crop.py
     # Creación de directorio para matrículas detectadas
-    if not os.path.exists("license-plates-detected"):
-        os.mkdir("license-plates-detected")
+    if not os.path.exists("traffic-signs-detected"):
+        os.mkdir("traffic-signs-detected")
     crp_cnt = 0
 
     # Directories
@@ -134,12 +134,12 @@ def detect(save_img=False):
                         cropobj = im0[int(xyxy[1]):int(xyxy[3]),int(xyxy[0]):int(xyxy[2])]
                         
                         #save crop part
-                        crop_file_path = os.path.join("license-plates-detected",str(p.name))
+                        crop_file_path = os.path.join("traffic-signs-detected",str(p.name))
                         if not os.path.exists(crop_file_path):
                             cv2.imwrite(crop_file_path, cropobj)
                         else:
                             filename = str(file_cnt) + "_" + str(p.name)
-                            crop_file_path = os.path.join("license-plates-detected", filename)
+                            crop_file_path = os.path.join("traffic-signs-detected", filename)
                             if not os.path.exists(crop_file_path):
                                 cv2.imwrite(crop_file_path, cropobj)
                             file_cnt += 1
